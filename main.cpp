@@ -17,18 +17,6 @@ struct PojedynczeZamowienie
     int ilosc;
 };
 
-double policzOdpad(const vector<double> &belki, double maxDlugosc)
-{
-    double odpad = 0;
-
-    for (int i = 0; i < belki.size(); i++)
-    {
-        odpad += (maxDlugosc - belki[i]);
-    }
-
-    return odpad;
-}
-
 struct Zamowienie
 {
     vector<PojedynczeZamowienie> listaZamowien;
@@ -57,7 +45,62 @@ struct Zamowienie
             cout << listaZamowien[i].dlugosc << " " << listaZamowien[i].ilosc << endl;
         }
     }
+
+    int size()
+    {
+        return listaZamowien.size();
+    }
 };
+
+double policzOdpad(const vector<double> &belki, double maxDlugosc)
+{
+    double odpad = 0;
+
+    for (int i = 0; i < belki.size(); i++)
+    {
+        odpad += (belki[i]);
+    }
+
+    return odpad;
+}
+
+void wypiszOdpad(const vector<double> &belki, double maxDlugosc)
+{
+    cout << "Odpad: " << policzOdpad(belki, maxDlugosc) << endl;
+
+    for (int i = 0; i < belki.size(); i++)
+    {
+        cout << "Belka " << (i + 1) << ": " << belki[i] << endl;
+    }
+}
+
+void wykonajHeurystykeFirstFitDecreasing(Zamowienie &zamowienie, vector<double> &belki, double dlugoscPoczatkowa)
+{
+    zamowienie.posortujMalejaco();
+
+    for (int i =0; i < zamowienie.size(); i++)
+    {
+        while (zamowienie[i].ilosc)
+        {
+            int iloscPrzedCieciem = zamowienie[i].ilosc;
+
+            for (int j = 0; j < belki.size(); j++)
+            {
+                if (belki[j] >= zamowienie[i].dlugosc)
+                {
+                    belki[j] -= zamowienie[i].dlugosc;
+                    zamowienie[i].ilosc--;
+                    break;
+                }
+            }
+
+            if (iloscPrzedCieciem == zamowienie[i].ilosc)
+            {
+                belki.push_back(dlugoscPoczatkowa);
+            }
+        }
+    }
+}
 
 int main()
 {
@@ -65,13 +108,12 @@ int main()
                                                         PojedynczeZamowienie(3.2, 4),
                                                         PojedynczeZamowienie(9.1, 2)});
 
-    vector<double> wykorzystaneBelki;
     double dlugoscPoczatkowa = 15.2;
+    vector<double> belki;
 
-    cout << policzOdpad(wykorzystaneBelki, dlugoscPoczatkowa) << endl;
+    wykonajHeurystykeFirstFitDecreasing(zamowienie, belki, dlugoscPoczatkowa);
 
-    zamowienie.posortujMalejaco();
-    zamowienie.wypisz();
+    wypiszOdpad(belki, dlugoscPoczatkowa);
 
     return 0;
 }
