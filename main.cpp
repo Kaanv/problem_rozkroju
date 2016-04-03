@@ -2,55 +2,9 @@
 #include <vector>
 #include <algorithm>
 
+#include "zamowienie.hpp"
+
 using namespace std;
-
-struct PojedynczeZamowienie
-{
-    PojedynczeZamowienie(double dlugosc_, int ilosc_) : dlugosc(dlugosc_), ilosc(ilosc_) {}
-
-    bool operator< (PojedynczeZamowienie const &zamowienie) const
-    {
-        return dlugosc < zamowienie.dlugosc;
-    }
-
-    double dlugosc;
-    int ilosc;
-};
-
-struct Zamowienie
-{
-    vector<PojedynczeZamowienie> listaZamowien;
-
-    PojedynczeZamowienie & operator[] (size_t numerZamowienia)
-    {
-        return listaZamowien[numerZamowienia];
-    }
-
-    Zamowienie() {}
-
-    Zamowienie(vector<PojedynczeZamowienie> listaZamowien_)
-    {
-        listaZamowien = listaZamowien_;
-    }
-
-    void posortujMalejaco()
-    {
-        sort(listaZamowien.rbegin(), listaZamowien.rend());
-    }
-
-    void wypisz()
-    {
-        for (int i = 0; i < listaZamowien.size(); i++)
-        {
-            cout << listaZamowien[i].dlugosc << " " << listaZamowien[i].ilosc << endl;
-        }
-    }
-
-    int size()
-    {
-        return listaZamowien.size();
-    }
-};
 
 double policzOdpad(const vector<double> &belki, double maxDlugosc)
 {
@@ -74,6 +28,28 @@ void wypiszOdpad(const vector<double> &belki, double maxDlugosc)
     }
 }
 
+void utnijBelke(vector<double> &belki, PojedynczeZamowienie &zamowienie, double dlugoscPoczatkowa)
+{
+    int iloscPrzedCieciem = zamowienie.ilosc;
+
+    for (int j = 0; j < belki.size(); j++)
+    {
+        if (belki[j] >= zamowienie.dlugosc)
+        {
+            belki[j] -= zamowienie.dlugosc;
+            zamowienie.ilosc--;
+            break;
+        }
+    }
+
+    if (zamowienie.ilosc == iloscPrzedCieciem)
+    {
+        belki.push_back(dlugoscPoczatkowa);
+        belki[belki.size() - 1] -= zamowienie.dlugosc;
+        zamowienie.ilosc--;
+    }
+}
+
 void wykonajHeurystykeFirstFitDecreasing(Zamowienie &zamowienie, vector<double> &belki, double dlugoscPoczatkowa)
 {
     zamowienie.posortujMalejaco();
@@ -82,22 +58,7 @@ void wykonajHeurystykeFirstFitDecreasing(Zamowienie &zamowienie, vector<double> 
     {
         while (zamowienie[i].ilosc)
         {
-            int iloscPrzedCieciem = zamowienie[i].ilosc;
-
-            for (int j = 0; j < belki.size(); j++)
-            {
-                if (belki[j] >= zamowienie[i].dlugosc)
-                {
-                    belki[j] -= zamowienie[i].dlugosc;
-                    zamowienie[i].ilosc--;
-                    break;
-                }
-            }
-
-            if (iloscPrzedCieciem == zamowienie[i].ilosc)
-            {
-                belki.push_back(dlugoscPoczatkowa);
-            }
+            utnijBelke(belki, zamowienie[i], dlugoscPoczatkowa);
         }
     }
 }
