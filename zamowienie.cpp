@@ -15,6 +15,15 @@ PojedynczeZamowienie & Zamowienie::operator[] (size_t numerZamowienia)
     return listaZamowien[numerZamowienia];
 }
 
+void Zamowienie::zrealizuj(int numerZamowienia)
+{
+    listaZamowien[numerZamowienia].ilosc--;
+    if (!listaZamowien[numerZamowienia].ilosc)
+    {
+        listaZamowien.erase(listaZamowien.begin() + numerZamowienia);
+    }
+}
+
 Zamowienie::Zamowienie(vector<PojedynczeZamowienie> listaZamowien_)
 {
     listaZamowien = listaZamowien_;

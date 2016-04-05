@@ -17,6 +17,8 @@ struct Zamowienie
     Zamowienie(std::vector<PojedynczeZamowienie> listaZamowien_);
     PojedynczeZamowienie & operator[] (std::size_t numerZamowienia);
 
+    void zrealizuj(int numerZamowienia);
+
     void posortujMalejaco();
     void wypisz();
     int size();

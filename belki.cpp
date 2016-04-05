@@ -28,23 +28,24 @@ void Belki::wypiszOdpad() const
 
 void Belki::utnij(PojedynczeZamowienie &zamowienie)
 {
-    int iloscPrzedCieciem = zamowienie.ilosc;
+    bool dodacBelke = true;
 
-    for (int j = 0; j < belki.size(); j++)
+    for (int i = 0; i < belki.size(); i++)
     {
-        if (belki[j] >= zamowienie.dlugosc)
+        if (belki[i] >= zamowienie.dlugosc)
         {
-            belki[j] -= zamowienie.dlugosc;
-            zamowienie.ilosc--;
+            belki[i] -= zamowienie.dlugosc;
+            dodacBelke = false;
+            cout << "Ucieto belke " << (i+1) << ". o " << zamowienie.dlugosc << endl;
             break;
         }
     }
 
-    if (zamowienie.ilosc == iloscPrzedCieciem)
+    if (dodacBelke)
     {
         belki.push_back(dlugoscPoczatkowa);
         belki[belki.size() - 1] -= zamowienie.dlugosc;
-        zamowienie.ilosc--;
+        cout << "Ucieto belke " << belki.size() << ". o " << zamowienie.dlugosc << endl;
     }
 }
 
@@ -52,11 +53,9 @@ void Belki::wykonajHeurystykeFirstFitDecreasing(Zamowienie &zamowienie)
 {
     zamowienie.posortujMalejaco();
 
-    for (int i =0; i < zamowienie.size(); i++)
+    while (zamowienie.size())
     {
-        while (zamowienie[i].ilosc)
-        {
-            utnij(zamowienie[i]);
-        }
+        utnij(zamowienie[0]);
+        zamowienie.zrealizuj(0);
     }
 }
