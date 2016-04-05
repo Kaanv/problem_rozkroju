@@ -73,6 +73,9 @@ int main()
     cout.precision(1);
     srand(time(NULL));
 
+    int maxIloscPrzeszukiwan = 30;
+    int maxIloscPrzeszukiwanychSasiadow = 5;
+
     Zamowienie zamowienie(vector<PojedynczeZamowienie> {PojedynczeZamowienie(4.5, 3),
                                                         PojedynczeZamowienie(3.2, 4),
                                                         PojedynczeZamowienie(9.1, 2)});
@@ -86,7 +89,7 @@ int main()
 
     Rozwiazanie ostatnieRozwiazanie = belki.wykonajHeurystykeFirstFitDecreasing(zamowienie);
     najlepszeZnalezione = ostatnieRozwiazanie;
-    obecneRozwiazanie = ostatnieRozwiazanie;
+    obecneRozwiazanie = najlepszeZnalezione;
 
     tabuList[ostatnieRozwiazanie.dlugosciCiec] = 0;
 
@@ -99,7 +102,7 @@ int main()
 
     cout << "Odpad: " << ostatnieRozwiazanie.odpad << endl;
 
-    for (int i = 0; i < 30; i++)
+    for (int i = 0; i < maxIloscPrzeszukiwan; i++)
     {
         ostatnieRozwiazanie = znajdzNowegoSasiada(obecneRozwiazanie, dlugoscPoczatkowa);
         tabuList[obecneRozwiazanie.dlugosciCiec]++;
@@ -109,7 +112,8 @@ int main()
             najlepszeZnalezione = ostatnieRozwiazanie;
             obecneRozwiazanie = najlepszeZnalezione;
         }
-        else if (tabuList.count(obecneRozwiazanie.dlugosciCiec) && tabuList[obecneRozwiazanie.dlugosciCiec] > 5)
+        else if (tabuList.count(obecneRozwiazanie.dlugosciCiec)
+                 && tabuList[obecneRozwiazanie.dlugosciCiec] > maxIloscPrzeszukiwanychSasiadow)
         {
             obecneRozwiazanie = ostatnieRozwiazanie;
         }
