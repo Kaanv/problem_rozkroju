@@ -26,36 +26,53 @@ void Belki::wypiszOdpad() const
     }
 }
 
-void Belki::utnij(PojedynczeZamowienie &zamowienie)
+int Belki::utnij(double dlugosc)
 {
     bool dodacBelke = true;
 
     for (int i = 0; i < belki.size(); i++)
     {
-        if (belki[i] >= zamowienie.dlugosc)
+        if (belki[i] >= dlugosc)
         {
-            belki[i] -= zamowienie.dlugosc;
+            belki[i] -= dlugosc;
             dodacBelke = false;
-            cout << "Ucieto belke " << (i+1) << ". o " << zamowienie.dlugosc << endl;
-            break;
+            return i;
         }
     }
 
     if (dodacBelke)
     {
         belki.push_back(dlugoscPoczatkowa);
-        belki[belki.size() - 1] -= zamowienie.dlugosc;
-        cout << "Ucieto belke " << belki.size() << ". o " << zamowienie.dlugosc << endl;
+        belki[belki.size() - 1] -= dlugosc;
+        return (belki.size() - 1);
     }
 }
 
-void Belki::wykonajHeurystykeFirstFitDecreasing(Zamowienie &zamowienie)
+void Belki::utnij(Ciecie ciecie)
+{
+    if (ciecie.numerBelki >= belki.size())
+    {
+        for (int i = 0; i < (ciecie.numerBelki + 1 - belki.size()); i++)
+        {
+            belki.push_back(dlugoscPoczatkowa);
+        }
+    }
+    belki[ciecie.numerBelki] -= ciecie.dlugosc;
+}
+
+Rozwiazanie Belki::wykonajHeurystykeFirstFitDecreasing(Zamowienie &zamowienie)
 {
     zamowienie.posortujMalejaco();
+    Rozwiazanie wynikHeurystyki;
 
     while (zamowienie.size())
     {
-        utnij(zamowienie[0]);
+        wynikHeurystyki.dlugosciCiec.push_back(zamowienie[0].dlugosc);
+        wynikHeurystyki.sciezka.push_back(Ciecie(utnij(zamowienie[0].dlugosc), zamowienie[0].dlugosc));
         zamowienie.zrealizuj(0);
     }
+
+    wynikHeurystyki.odpad = policzOdpad();
+
+    return wynikHeurystyki;
 }
