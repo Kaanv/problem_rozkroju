@@ -110,15 +110,6 @@ int main(int argc, char * argv[])
 
     tabuList[ostatnieRozwiazanie.dlugosciCiec] = 0;
 
-    cout << "Rozwiazanie znalezione przez heurystyke FFD:" << endl;
-
-    for (int i = 0; i < ostatnieRozwiazanie.sciezka.size(); i++)
-    {
-        cout << ostatnieRozwiazanie.sciezka[i].numerBelki << " : " << ostatnieRozwiazanie.sciezka[i].dlugosc << endl;
-    }
-
-    cout << "Odpad: " << ostatnieRozwiazanie.odpad << endl;
-
     for (int i = 0; i < maxIloscPrzeszukiwan; i++)
     {
         ostatnieRozwiazanie = znajdzNowegoSasiada(obecneRozwiazanie, dlugoscPoczatkowa);
@@ -136,14 +127,7 @@ int main(int argc, char * argv[])
         }
     }
 
-    cout << "Najlepsze znalezione rozwiazanie:" << endl;
-
-    for (int i = 0; i < najlepszeZnalezione.sciezka.size(); i++)
-    {
-        cout << najlepszeZnalezione.sciezka[i].numerBelki << " : " << najlepszeZnalezione.sciezka[i].dlugosc << endl;
-    }
-
-    cout << "Odpad: " << najlepszeZnalezione.odpad << endl;
+    cout << najlepszeZnalezione.odpad << endl;
 
     return 0;
 }
