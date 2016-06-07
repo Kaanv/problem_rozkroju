@@ -16,8 +16,8 @@ sub open_file
 my @file = open_file($ARGV[0]);
 my $output;
 
-my $max_search = 10000;
-my $max_neigh = 1;
+my $max_search = 1000;
+my $max_neigh = 50;
 
 my $current_data = "$max_search $max_neigh ";
 

@@ -17,6 +17,7 @@ struct Rozwiazanie
     std::vector<Ciecie> sciezka;
     std::vector<float> dlugosciCiec;
     float odpad;
+    int iloscBelek;
 };
 
 struct Belki

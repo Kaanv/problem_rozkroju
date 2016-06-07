@@ -73,6 +73,7 @@ Rozwiazanie Belki::wykonajHeurystykeFirstFitDecreasing(Zamowienie &zamowienie)
     }
 
     wynikHeurystyki.odpad = policzOdpad();
+    wynikHeurystyki.iloscBelek = belki.size();
 
     return wynikHeurystyki;
 }

@@ -37,6 +37,7 @@ Rozwiazanie utworzRozwiazanieZDlugosci(vector<float> dlugosciCiec, double dlugos
 
     rozwiazanie.odpad = policzOdpadSciezki(rozwiazanie.sciezka, dlugoscPoczatkowa);
     rozwiazanie.dlugosciCiec = dlugosciCiec;
+    rozwiazanie.iloscBelek = belki.belki.size();
 
     return rozwiazanie;
 }
@@ -48,7 +49,7 @@ void zamienMiejscami(vector<float> &vd, int pierwsza, int druga)
     vd[druga] = help;
 }
 
-Rozwiazanie znajdzNowegoSasiada(Rozwiazanie oryginalneRozwiazanie, float dlugoscPoczatkowa)
+Rozwiazanie znajdzNowegoSasiada(Rozwiazanie & oryginalneRozwiazanie, float dlugoscPoczatkowa)
 {
     int rozmiar = oryginalneRozwiazanie.dlugosciCiec.size();
     int pierwszaLosowaLiczba = rand()%rozmiar;
@@ -127,7 +128,7 @@ int main(int argc, char * argv[])
         }
     }
 
-    cout << najlepszeZnalezione.odpad << endl;
+    cout << najlepszeZnalezione.iloscBelek << endl;
 
     return 0;
 }
