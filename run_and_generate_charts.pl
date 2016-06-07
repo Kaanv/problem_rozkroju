@@ -14,35 +14,64 @@ sub open_file
 }
 
 my @file = open_file($ARGV[0]);
-my $output;
 
-my $max_search = 1000;
-my $max_neigh = 50;
-
-my $current_data = "$max_search $max_neigh ";
-
-my $name;
-
-for (my $i = 0; $i < @file; $i++)
+sub create_data
 {
-	if ($file[$i] =~ /('.*')\r?\n/)
-	{
-		if ($current_data ne "$max_search $max_neigh ")
-		{
-			$output = `./problem $current_data`;
-			$current_data = "$max_search $max_neigh ";
-			print $name, ": $output";
-		}
+	my $max_search = $_[0];
+	my $max_neigh = $_[1];
 
-		$name = $1;
-		next;
-	}
-	while ($file[$i] =~ /([0-9\.]+)/g)
+	my $current_data = "$max_search $max_neigh ";
+
+	my @data = ();
+
+	for (my $i = 0; $i < @file; $i++)
 	{
-		$current_data = $current_data . $1 . " ";
+		if ($file[$i] =~ /('.*')\r?\n/)
+		{
+			if ($current_data ne "$max_search $max_neigh ")
+			{
+				push(@data, $current_data);
+				$current_data = "$max_search $max_neigh ";
+			}
+
+			next;
+		}
+		while ($file[$i] =~ /([0-9\.]+)/g)
+		{
+			$current_data = $current_data . $1 . " ";
+		}
 	}
+	push(@data, $current_data);
+	return @data;
 }
 
-$output = `./problem $current_data`;
-print "$name", ": $output";
+sub count_sum_for_data
+{
+	my @data = @{$_[0]};
+	my $sum = 0;
+	my $output;
+
+	for (my $i = 0; $i < @data; $i++)
+	{
+		$output = `./problem ${data[$i]}`;
+		$sum += $output;
+	}
+
+	return $sum;
+}
+
+for (my $max_search = 0; $max_search < 2000; $max_search += 100)
+{
+	for (my $max_neigh = 10; $max_neigh < 100; $max_neigh += 10)
+	{
+		my @data = create_data($max_search, $max_neigh);
+		my $average = 0;
+		for (my $i = 0; $i < 5; $i++)
+		{
+			$average += count_sum_for_data(\@data);
+		}
+		$average = $average/5;
+		print "$max_search $max_neigh $average\n";
+	}
+}
 
