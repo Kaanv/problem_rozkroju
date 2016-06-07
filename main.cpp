@@ -6,12 +6,13 @@
 #include <cstdlib>
 #include <ctime>
 #include <map>
+#include <string>
 
 using namespace std;
 
-map<vector<double>, int> tabuList;
+map<vector<float>, int> tabuList;
 
-double policzOdpadSciezki(vector<Ciecie> sciezka, double dlugoscPoczatkowa)
+float policzOdpadSciezki(vector<Ciecie> sciezka, double dlugoscPoczatkowa)
 {
     Belki belki(dlugoscPoczatkowa);
 
@@ -23,7 +24,7 @@ double policzOdpadSciezki(vector<Ciecie> sciezka, double dlugoscPoczatkowa)
     return belki.policzOdpad();
 }
 
-Rozwiazanie utworzRozwiazanieZDlugosci(vector<double> dlugosciCiec, double dlugoscPoczatkowa)
+Rozwiazanie utworzRozwiazanieZDlugosci(vector<float> dlugosciCiec, double dlugoscPoczatkowa)
 {
     Rozwiazanie rozwiazanie;
 
@@ -40,14 +41,14 @@ Rozwiazanie utworzRozwiazanieZDlugosci(vector<double> dlugosciCiec, double dlugo
     return rozwiazanie;
 }
 
-void zamienMiejscami(vector<double> &vd, int pierwsza, int druga)
+void zamienMiejscami(vector<float> &vd, int pierwsza, int druga)
 {
-    double help = vd[pierwsza];
+    float help = vd[pierwsza];
     vd[pierwsza] = vd[druga];
     vd[druga] = help;
 }
 
-Rozwiazanie znajdzNowegoSasiada(Rozwiazanie oryginalneRozwiazanie, double dlugoscPoczatkowa)
+Rozwiazanie znajdzNowegoSasiada(Rozwiazanie oryginalneRozwiazanie, float dlugoscPoczatkowa)
 {
     int rozmiar = oryginalneRozwiazanie.dlugosciCiec.size();
     int pierwszaLosowaLiczba = rand()%rozmiar;
@@ -67,20 +68,36 @@ Rozwiazanie znajdzNowegoSasiada(Rozwiazanie oryginalneRozwiazanie, double dlugos
     }
 }
 
-int main()
+float ctof(char* tekst)
+{
+    return stof(string(tekst));
+}
+
+int ctoi(char* tekst)
+{
+    return stoi(string(tekst));
+}
+
+int main(int argc, char * argv[])
 {
     cout.setf(ios::fixed);
     cout.precision(1);
     srand(time(NULL));
 
-    int maxIloscPrzeszukiwan = 30;
-    int maxIloscPrzeszukiwanychSasiadow = 5;
+    int maxIloscPrzeszukiwan = ctoi(argv[1]);
+    int maxIloscPrzeszukiwanychSasiadow = ctoi(argv[2]);
 
-    Zamowienie zamowienie(vector<PojedynczeZamowienie> {PojedynczeZamowienie(4.5, 3),
-                                                        PojedynczeZamowienie(3.2, 4),
-                                                        PojedynczeZamowienie(9.1, 2)});
+    int iloscBelek = ctoi(argv[3]);
+    float dlugoscPoczatkowa = ctof(argv[4]);
 
-    double dlugoscPoczatkowa = 15.5;
+    vector<PojedynczeZamowienie> zamowienia;
+
+    for (int i = 0; i < iloscBelek; i++)
+    {
+        zamowienia.push_back(PojedynczeZamowienie(ctof(argv[5 + i*2]), ctoi(argv[5 + i * 2 + 1])));
+    }
+
+    Zamowienie zamowienie(zamowienia);
 
     Rozwiazanie najlepszeZnalezione;
     Rozwiazanie obecneRozwiazanie;

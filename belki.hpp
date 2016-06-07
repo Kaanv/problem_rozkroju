@@ -6,29 +6,29 @@
 
 struct Ciecie
 {
-    Ciecie(int numerBelki_, double dlugosc_) : numerBelki(numerBelki_), dlugosc(dlugosc_) {}
+    Ciecie(int numerBelki_, float dlugosc_) : numerBelki(numerBelki_), dlugosc(dlugosc_) {}
 
     int numerBelki;
-    double dlugosc;
+    float dlugosc;
 };
 
 struct Rozwiazanie
 {
     std::vector<Ciecie> sciezka;
-    std::vector<double> dlugosciCiec;
-    double odpad;
+    std::vector<float> dlugosciCiec;
+    float odpad;
 };
 
 struct Belki
 {
-    Belki(double dlugosc) : dlugoscPoczatkowa(dlugosc) {}
+    Belki(float dlugosc) : dlugoscPoczatkowa(dlugosc) {}
 
-    double policzOdpad() const;
+    float policzOdpad() const;
     void wypiszOdpad() const;
-    int utnij(double dlugosc);
+    int utnij(float dlugosc);
     void utnij(Ciecie ciecie);
     Rozwiazanie wykonajHeurystykeFirstFitDecreasing(Zamowienie &zamowienie);
 
-    double dlugoscPoczatkowa;
-    std::vector<double> belki;
+    float dlugoscPoczatkowa;
+    std::vector<float> belki;
 };

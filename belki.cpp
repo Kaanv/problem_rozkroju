@@ -4,9 +4,9 @@
 
 using namespace std;
 
-double Belki::policzOdpad() const
+float Belki::policzOdpad() const
 {
-    double odpad = 0;
+    float odpad = 0;
 
     for (int i = 0; i < belki.size(); i++)
     {
@@ -26,7 +26,7 @@ void Belki::wypiszOdpad() const
     }
 }
 
-int Belki::utnij(double dlugosc)
+int Belki::utnij(float dlugosc)
 {
     bool dodacBelke = true;
 

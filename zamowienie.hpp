@@ -4,10 +4,10 @@
 
 struct PojedynczeZamowienie
 {
-    PojedynczeZamowienie(double dlugosc_, int ilosc_) : dlugosc(dlugosc_), ilosc(ilosc_) {}
+    PojedynczeZamowienie(float dlugosc_, int ilosc_) : dlugosc(dlugosc_), ilosc(ilosc_) {}
     bool operator< (PojedynczeZamowienie const &zamowienie) const;
 
-    double dlugosc;
+    float dlugosc;
     int ilosc;
 };
 
